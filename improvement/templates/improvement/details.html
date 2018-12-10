@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load todo %}
+
+
+{% block title %}Improvement {{ improvement.title }}{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>{{ improvement.title }}</h1><a href="{% url 'improvement:index' %}">Back to list</a> | <a href="{% url 'improvement:edit' improvement.pk %}">Edit</a>
+        <hr />
+    </div>
+    <hr />
+</div>
+<div class="row">
+    <div class="cell-12">
+        <div class="card">
+            <div class="card-header bg-lightGray">
+                Improvements informations
+            </div>
+            <div class="card-content p-2">
+                <div class="row">
+                    <div class="cell-2">
+                        <span class="text-bold">Status</span><br />
+                        {{ improvement.get_status_display }}
+                    </div>
+                    <div class="cell-2">
+                        <span class="text-bold">Progress</span><br />
+                        <adress>
+                            {{ improvement.progress }}%
+                        </adress>
+                    </div>
+                    <div class="cell-2">
+                        <span class="text-bold">Created date</span><br />
+                        {{ improvement.created_at|date:"d.m.y H:i" }}
+                    </div>
+                    {% if employee.fax %}
+                    <div class="cell-2">
+                        <span class="text-bold">Last update</span><br />
+                        {{ improvement.updated_at|date:"d.m.y H:i" }}
+                    </div>
+                    {% endif %}
+                    <div class="cell-4">
+                        <span class="text-bold">Request by</span><br />
+                        <a href="mailto:{{ improvement.owner.email }}">{{ improvement.owner.get_full_name }} ({{ improvement.owner.get_department_display }})</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header bg-lightGray">
+                Description
+            </div>
+            <div class="card-content p-2">
+                <div class="row">
+                    <div class="cell-12">
+                        {{ improvement.description|linebreaksbr }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+                <div class="card-header bg-lightGray">
+                    Advancement
+                </div>
+                <div class="card-content p-2">
+                    <div class="row">
+                        <div class="cell-12">
+                            {{ improvement.advancement|linebreaksbr }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+
+{% block js %}
+
+{% endblock %}

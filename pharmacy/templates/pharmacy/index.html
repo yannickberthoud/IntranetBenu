@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Todo{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>Pharmacies</h1><a href="{% url 'pharmacy:new' %}">New</a>
+        <hr />
+    </div>
+    <hr />
+</div>
+<div class="row">
+    <div class="cell-12">
+        {% if messages %}
+        <ul class="custom-list-marker">
+            {% for message in messages %}
+            <li data-marker="✓" {% if message.tags %} class="{{ message.tags }} fg-green" {% endif %}>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="calendar" class="mt-1">
+                <div class="row mb-2">
+                        <div class="cell-md-8 my-search-wrapper"></div>
+                        <div class="cell-md-4 my-rows-wrapper"></div>
+                </div>
+                <table class="table stripped row-hover" data-role="table" data-rownum="true" data-info-wrapper=".my-info-wrapper"
+                    data-pagination-wrapper=".my-pagination-wrapper"
+                    data-search-wrapper=".my-search-wrapper"
+                    data-rows-wrapper=".my-rows-wrapper">
+                <thead>
+                    <th data-sortable="true">Name</th>
+                    <th data-sortable="true">Street</th>
+                    <th data-sortable="true">City</th>
+                    <th data-sortable="true">Canton</th>
+                    <th data-sortable="true">Pharmacist</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    {% for pharmacy in pharmacies %}
+                    <tr>
+                        <td><a href="{% url 'pharmacy:details' pharmacy.pk %}">{{ pharmacy.name }}</a></td>
+                        <td>{{ pharmacy.street }}</td>
+                        <td>{{ pharmacy.npa }}, {{ pharmacy.city }}</td>
+                        <td>{{ pharmacy.canton }}</td>
+                        <td>{{ pharmacy.manager.get_full_name }}</td>
+                        <td>
+                            <form action="{% url 'pharmacy:delete' pharmacy.pk %}" method="post">{% csrf_token %}
+                                <button type="submit" class="button small bg-white cycle" value="Confirm">
+                                    <span class="mif-bin bg-white fg-red"></span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+
+
+{% block js %}{% endblock %}

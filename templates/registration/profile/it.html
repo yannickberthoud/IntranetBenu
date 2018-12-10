@@ -1,0 +1,40 @@
+{% load supports %}
+{% load todo %}
+{% load timesheet %}
+{% load improvement %}
+
+<div class="row">
+        <div class="cell-6">
+                {% show_my_critical_tickets %}
+        </div>
+        <div class="cell-6">
+                {% show_my_timesheet %}
+        </div>
+</div>
+<div class="row">
+        <div class="cell-12">
+                {% show_my_critical_tasks %}
+        </div>
+</div>
+<div class="row mt-5">
+        <div class="cell-6"></div>
+        <div class="cell-6">
+                {% show_latest_improvement %}
+        </div>
+</div>
+
+{% block js %}
+<script>
+        function exportToCSV() {
+                var date = new Date();
+                var year = date.getFullYear();
+                var month = date.getMonth();
+                var table = $('#table').data('table');
+                table.export('CSV', 'all', 'Todolist-' + month + '-' + year + '.csv', {
+                        csvDelimiter: ",",
+                        csvNewLine: "\r\n",
+                        includeHeader: true
+                });
+        } (jQuery)
+</script>
+{% endblock %}

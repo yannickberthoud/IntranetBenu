@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block css %}{% endblock %}
+
+{% block title %}Intranet{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>Welcome {{ request.user.get_name }} !</h1>
+    </div>
+</div>
+
+{% ifequal request.user.department 'I' %}
+    {% include 'registration/profile/it.html' %}    
+{% endifequal %}
+
+{% endblock %}
+
+{% block js %}{% endblock %}

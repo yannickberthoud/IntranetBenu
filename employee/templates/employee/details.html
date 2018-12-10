@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load todo %}
+{% load timesheet %}
+
+
+{% block title %}Employee {{ employee.get_full_name }}{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>{{ employee.get_full_name }}</h1><a href="{% url 'employee:index' %}">Back to list</a>
+        <hr />
+    </div>
+    <hr />
+</div>
+<div class="row">
+    <div class="cell-12">
+        <ul data-cls-tabs="flex-justify-start" data-role="tabs" data-expand="true">
+            <li><a href="#personal_data">Personal data</a></li>
+            <li><a href="#admin_work">Administrative work</a></li>
+            <li><a href="#">Comptability</a></li>
+            <li><a href="#tasks">Tasks</a></li>
+            <li><a href="#timesheet">Timesheet</a></li>
+        </ul>
+        <div class="border bd-default no-border-top p-2">
+            <div class="row">
+                <div class="cell-12">
+                    <div id="personal_data">
+                        <div class="card">
+                            <div class="card-header bg-lightGray">
+                                Personnal informations
+                            </div>
+                            <div class="card-content p-2">
+                                <div class="row">
+                                    <div class="cell-2">
+                                        <span class="text-bold">Status</span><br />
+                                        {% if employee.is_married %}
+                                        marié
+                                        {% else %}
+                                        pas marié
+                                        {% endif %}
+                                        {% if employee.number_of_children > 0 %}
+                                        , {{ employee.number_of_children }} enfant(s)
+                                        {% else %}
+                                        sans enfant
+                                        {% endif %}
+                                    </div>
+                                    <div class="cell-2">
+                                        <span class="text-bold">Adresse</span><br />
+                                        <adress>
+                                            {{ employee.street }}
+                                            {{ employee.npa }}, {{ employee.city}}
+                                            {{ employe.canton }}
+                                        </adress>
+                                    </div>
+                                    <div class="cell-2">
+                                        <span class="text-bold">Tél.</span><br />
+                                        {{ employee.phone }}
+                                    </div>
+                                    {% if employee.fax %}
+                                    <div class="cell-2">
+                                        <span class="text-bold">Fax.</span><br />
+                                        {{ employee.fax }}
+                                    </div>
+                                    {% endif %}
+                                    <div class="cell-2">
+                                        <span class="text-bold">Email.</span><br />
+                                        <a href="mailto:{{ employee.email }}">{{ employee.email }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="admin_work">
+                <div class="row">
+                    <div class="cell-12">
+                        <div class="card">
+                            <div class="card-header bg-lightGray">
+                                work
+                            </div>
+                            <div class="card-content p-2">
+                                <div class="row">
+                                    <div class="cell-2">
+                                        <span class="text-bold">Department</span><br />
+                                        {{ employee.get_department_display }}
+                                    </div>
+                                    <div class="cell-2">
+                                        <span class="text-bold">Role</span><br />
+                                        {{ employee.get_role_display }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tasks">
+                <div class="row">
+                    <div class="cell-12">
+                        <div class="card">
+                            <div class="card-header bg-lightGray">
+                                Tasks
+                            </div>
+                            <div class="card-content p-2">
+                                {% show_tasks_of id=object.pk %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="timesheet">
+                <div class="row">
+                    <div class="cell-12">
+                        <div class="card">
+                            <div class="card-header bg-lightGray">
+                                Timesheets
+                            </div>
+                            <div class="card-content p-2">
+                                {% show_timesheet_of id=object.pk %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block js %}
+
+{% endblock %}

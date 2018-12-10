@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>New Ticket</h1>
+        <hr />
+    </div>
+    <hr />
+</div>
+<div class="row">
+    <div class="cell-12">
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="button bg-green fg-white" value="Save">
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block js %}{% endblock %}

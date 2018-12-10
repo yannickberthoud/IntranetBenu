@@ -1,0 +1,24 @@
+<div class="bg-brandColor2 fg-white p-2 drag-element">Help desk
+    <span class="place-right">
+        <a href="{% url 'support:new' %}" class="fg-white fg-orange-hover" title="New ticket">+ Add ticket</a> |
+        <a href="{% url 'support:index' %}" class="fg-white fg-orange-hover" title="Show all ticket">Show all tickets</a>
+    </span>
+</div>
+<div class="border bd-brandColor2 p-2 mb-5">
+    <table class="table stripped" data-role="table" data-show-search="hide" data-show-rows-steps="false"
+        data-show-table-info="false" data-show-pagination="false">
+        <thead>
+            <th data-sortable="true">Client</th>
+            <th data-sortable="true">Updated at</th>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td><a href="{% url 'support:edit' ticket.pk %}" title="HelpDesk">{{ ticket.client }}</a></td>
+                <td>{{ ticket.updated_at|date:"d.m.Y" }}</td>
+            </tr>
+            {% empty %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

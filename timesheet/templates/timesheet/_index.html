@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Timesheet{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="cell-12">
+                <h1>Timesheet ({{ total_hours_per_week }}/42,5)</h1><a href="{% url 'timesheet:new' %}">New</a><hr />
+        </div>
+        <hr />
+    </div>
+    <div class="row">
+        <div class="cell-12">
+                {% if messages %}
+                    <ul class="custom-list-marker">
+                        {% for message in messages %}
+                            <li data-marker="✓"{% if message.tags %} class="{{ message.tags }} fg-green"{% endif %}>
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            <div id="calendar" class="mt-1">
+                <h4>Week {% now "W" %}</h4>
+                {% regroup events_list|dictsort:"start" by start as events %}
+                {% for start,jobs in events %}
+                    {% ifchanged %}
+                        <div class="row">
+                        <div class="cell-md-6 bg-lightGray fg-black text-bold p-2">
+                            {{ start|date:"l" }}
+                            </div>
+                            <div class="cell-md-6 bg-lightGray fg-black text-bold p-2 text-right">
+                                {{ start|date:"d M. Y" }}
+                            </div>
+                        </div>
+                    {% endifchanged %}
+                        {% for job in jobs %}
+                        <div class="row">
+                            <div class="cell-md-2">
+                                {% if job.allDay %}
+                                    <span>All Day</span>
+                                {% else %}
+                                    <span>{{ job.start|date:"H:i" }}  - {{ job.end|date:"H:i" }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="cell-md-6">
+                                <span><a href="{% url 'timesheet:edit' job.pk %}">{{ job.title }}</a></span>
+                            </div>
+                            <div class="cell-md-4 text-right">
+                                <form action="{% url 'timesheet:delete' job.pk %}" method="post">{% csrf_token %}
+                                    <button type="submit" class="button small bg-white cycle" value="Confirm">
+                                        <span class="mif-bin bg-white fg-red"></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block js %}{% endblock %}

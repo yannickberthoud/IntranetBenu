@@ -1,0 +1,34 @@
+{% if tasks %}
+<table class="table stripped row-hover" data-role="table" data-rownum="true" data-show-search="false">
+    <thead>
+        <th data-sortable="true">Title</th>
+        <th data-sortable="true">Description</th>
+        <th data-sortable="true">Priority</th>
+        <th data-sortable="true">Due date</th>
+        <th data-sortable="true">status</th>
+        <th></th>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td><a href="{% url 'todo:edit' task.pk %}" title="Tasks">{{ task.title }}</a></td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.get_priority_display }}</td>
+            <td>{{ task.due_date|date:"d.m.Y H:i" }}</td>
+            <td>{{ task.get_status_display }}</td>
+            <td>
+                <form action="{% url 'todo:delete' task.pk %}" method="post">{% csrf_token %}
+                    <button type="submit" class="button small bg-white cycle" value="Confirm">
+                        <span class="mif-bin bg-white fg-red"></span>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+No tasks currently
+{% endif %}

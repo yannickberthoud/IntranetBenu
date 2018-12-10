@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block css %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>Support Ticket <a href="{% url 'support:new' %}" class="bg-orange fg-white button" title="New ticket">New
+                ticket</a></h1>
+        <hr />
+    </div>
+    <hr />
+</div>
+<div class="row">
+    <div class="cell-12">
+            <div class="row mb-2">
+                    <div class="cell-md-8 my-search-wrapper"></div>
+                    <div class="cell-md-4 my-rows-wrapper"></div>
+            </div>
+            <table class="table stripped row-hover" data-role="table" data-rownum="true" data-info-wrapper=".my-info-wrapper"
+                data-pagination-wrapper=".my-pagination-wrapper"
+                data-search-wrapper=".my-search-wrapper"
+                data-rows-wrapper=".my-rows-wrapper">
+            <thead>
+                <tr>
+                    <th data-sortable="true">Assigned to</th>
+                    <th data-sortable="true">Client</th>
+                    <th data-sortable="true">Priority</th>
+                    <th data-sortable="true">Status</th>
+                    <th data-sortable="true">Created at</th>
+                    <th data-sortable="true">Updated at</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in object_list %}
+                <tr>
+                    <td>{{ ticket.assigned_to.first_name }} {{ ticket.assigned_to.last_name }}</td>
+                    <td><a href="{% url 'support:edit' ticket.pk %}" title="HelpDesk">{{ ticket.client }}</a></td>
+                    <td>
+                        <span class="{% ifequal ticket.priority 'c' %}fg-red{% endifequal %}">
+                            {{ ticket.get_priority_display }}
+                        </span>
+                    </td>
+                    <td>{{ ticket.get_status_display }}</td>
+                    <td>{{ ticket.created_at|date:"d.m.Y" }}</td>
+                    <td>{{ ticket.updated_at|date:"d.m.Y" }}</td>
+                </tr>
+                {% empty %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}{% endblock %}

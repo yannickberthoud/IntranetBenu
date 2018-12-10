@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Todo{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>Todo</h1><a href="{% url 'todo:new' %}">New</a>
+        <hr />
+    </div>
+    <hr />
+</div>
+<div class="row">
+    <div class="cell-12">
+        {% if messages %}
+        <ul class="custom-list-marker">
+            {% for message in messages %}
+            <li data-marker="✓" {% if message.tags %} class="{{ message.tags }} fg-green" {% endif %}>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="calendar" class="mt-1">
+                <div class="row mb-2">
+                        <div class="cell-md-8 my-search-wrapper"></div>
+                        <div class="cell-md-4 my-rows-wrapper"></div>
+                </div>
+                <table class="table stripped row-hover" data-role="table" data-rownum="true" data-info-wrapper=".my-info-wrapper"
+                    data-pagination-wrapper=".my-pagination-wrapper"
+                    data-search-wrapper=".my-search-wrapper"
+                    data-rows-wrapper=".my-rows-wrapper">
+                <thead>
+                    <th data-sortable="true">Department</th>
+                    <th data-sortable="true">Assigned to</th>
+                    <th data-sortable="true">Title</th>
+                    <th data-sortable="true">Description</th>
+                    <th data-sortable="true">Priority</th>
+                    <th data-sortable="true">Due date</th>
+                    <th data-sortable="true">status</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    {% for task in todos_list %}
+                    <tr>
+                        <td>{{ task.get_department_display }}</td>
+                        <td>{{ task.assigned_to.get_full_name }}</td>
+                        <td><a href="{% url 'todo:edit' task.pk %}" title="Tasks">{{ task.title }}</a></td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.get_priority_display }}</td>
+                        <td>{{ task.due_date|date:"d.m.Y H:i" }}</td>
+                        <td>{{ task.get_status_display }}</td>
+                        <td>
+                            <form action="{% url 'todo:delete' task.pk %}" method="post">{% csrf_token %}
+                                <button type="submit" class="button small bg-white cycle" value="Confirm">
+                                    <span class="mif-bin bg-white fg-red"></span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+
+
+{% block js %}{% endblock %}

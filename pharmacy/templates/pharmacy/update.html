@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pharmacy{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>Pharmacy</h1><a href="{% url 'pharmacy:index' %}">Back to list</a>
+        <hr />
+    </div>
+    <hr />
+</div>
+{{ form.non_field_errors }}
+<form method="post">{% csrf_token %}
+    {{ form }}
+
+    <input type="submit" class="button success mt-5" value="Save">
+</form>
+{% endblock %}
+
+
+
+{% block js %}
+
+{% endblock %}

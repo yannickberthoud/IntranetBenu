@@ -1,0 +1,26 @@
+<div class="bg-brandColor2 fg-white p-2 drag-element">Improvement
+    <span class="place-right">
+        <a href="{% url 'improvement:new' %}" class="fg-white fg-orange-hover" title="New ticket">+ Add</a> |
+        <a href="{% url 'improvement:index' %}" class="fg-white fg-orange-hover" title="Show all ticket">Show all</a>
+    </span>
+</div>
+<div class="border bd-brandColor2 p-2">
+    <table class="table stripped" data-role="table" data-show-search="hide" data-show-rows-steps="false"
+        data-show-table-info="false" data-show-pagination="false">
+        <thead>
+            <th data-sortable="true">title</th>
+            <th data-sortable="true">created at</th>
+            <th data-sortable="true">Progress</th>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td><a href="{% url 'improvement:edit' ticket.pk %}" title="HelpDesk">{{ improvement.client }}</a></td>
+                <td>{{ improvement.created_at|date:"d.m.Y" }}</td>
+                <td>{{ improvement.progress }}%</td>
+            </tr>
+            {% empty %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

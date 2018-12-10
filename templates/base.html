@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css">
+    <style>
+        header {
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        #footer {
+            height: 80px;
+        }
+    </style>
+    {% block css %}{% endblock %}
+
+    <title>IntranetBenu | {% block title %}{% endblock %}</title>
+</head>
+
+<body>
+
+    <header>
+        <div data-role="appbar" data-expand-point="md" class="bg-brandColor2 fg-white">
+            <a href="{% url 'homepage' %}" class="brand no-hover">
+                <span>Benu<sup>Intranet</sup></span>
+            </a>
+            <div class="container">
+                <ul class="app-bar-menu">
+                    <li class="fg-orange-hover fg-orange-active"><a href="{% url 'homepage' %}">Home</a></li>
+                    <li class="fg-orange-hover fg-orange-active">
+                        <a href="#" class="dropdown-toggle">Me</a>
+                        <ul class="d-menu" data-role="dropdown">
+                            <li><a href="{% url 'timesheet:index' %}"><span class="mif-event-available"></span>
+                                    Timesheet</a></li>
+                            <li><a href="{% url 'todo:index' %}"><span class="mif-list2"></span> Todo</a></li>
+                        </ul>
+                    </li>
+                    <li class="fg-orange-hover fg-orange-active">
+                        <a href="#" class="dropdown-toggle">IT</a>
+                        <ul class="d-menu" data-role="dropdown">
+                            <li><a href="{% url 'support:index' %}"><span class="mif-bug"></span> Support ticket</a></li>
+                        </ul>
+                    </li>
+                    <li class="fg-orange-hover fg-orange-active">
+                        <a href="#" class="dropdown-toggle">Directory</a>
+                        <ul class="d-menu" data-role="dropdown">
+                            <li><a href="{% url 'pharmacy:index' %}"><span class="mif-add-shopping-cart"></span>
+                                    Pharmacies</a></li>
+                            <li><a href="{% url 'employee:index' %}"><span class="mif-users"></span> Employees</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="app-bar-menu float-right">
+                    <li><a href="{% url 'logout' %}">logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div id="content" class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <footer id="footer" class="mt-15 bg-grayWhite fixed-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="cell-12 text-right">
+                    <a href="{% url 'improvement:index' %}" class="fg-brandColor2">Improvements</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+    {% block js %}{% endblock %}
+</body>
+
+</html>

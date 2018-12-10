@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Employees{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>Improvements</h1><a href="{% url 'improvement:new' %}">New</a>
+        <hr />
+    </div>
+    <hr />
+</div>
+<div class="row">
+    <div class="cell-12">
+        {% if messages %}
+        <ul class="custom-list-marker">
+            {% for message in messages %}
+            <li data-marker="✓" {% if message.tags %} class="{{ message.tags }} fg-green" {% endif %}>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="calendar" class="mt-1">
+            <div class="row mb-2">
+                <div class="cell-md-8 my-search-wrapper"></div>
+                <div class="cell-md-4 my-rows-wrapper"></div>
+            </div>
+            <table class="table stripped row-hover" data-role="table" data-rownum="true" data-info-wrapper=".my-info-wrapper"
+                data-pagination-wrapper=".my-pagination-wrapper" data-search-wrapper=".my-search-wrapper"
+                data-rows-wrapper=".my-rows-wrapper">
+                <thead>
+                    <th data-sortable="true">Title</th>
+                    <th data-sortable="true">Created at</th>
+                    <th data-sortable="true">last updated</th>
+                    <th data-sortable="true">Status</th>
+                    <th data-sortable="true">Progress</th>
+                    <th data-sortable="true">Request by</th>
+                </thead>
+                <tbody>
+                    {% for improvement in improvements_list %}
+                    <tr>
+                        <td><a href="{% url 'improvement:details' improvement.pk %}">{{ improvement.title }}</a></td>
+                        <td>{{ improvement.created_at|date:"d.m.y H:i" }}</td>
+                        <td>{{ improvement.updated_at|date:"d.m.y H:i" }}</td>
+                        <td>{{ improvement.get_status_display }}</td>
+                        <td>{{ improvement.progress }}%</td>
+                        <td>{{ improvement.owner.get_full_name }} ({{ improvement.owner.get_department_display}})</td>
+                    </tr>
+                    {% empty %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+
+
+{% block js %}{% endblock %}

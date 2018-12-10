@@ -1,0 +1,30 @@
+<div class="bg-brandColor2 fg-white p-2 drag-element">My last tasks
+    <span class="place-right">
+        <a href="{% url 'todo:new' %}" class="fg-white fg-orange-hover" title="New task">+ Add task</a> |
+        <a href="{% url 'todo:index' %}" class="fg-white fg-orange-hover" title="Show all tasks">Show all tasks</a></span></div>
+<div class="border bd-brandColor2 p-2 mb-5">
+    <table class="table stripped" data-role="table" data-show-search="hide" data-show-rows-steps="false"
+        data-show-table-info="false" data-show-pagination="false">
+        <thead>
+            <th data-sortable="true">Title</th>
+            <th data-sortable="true">Due date</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td><a href="{% url 'todo:edit' task.pk %}" title="Tasks">{{ task.title }}</a></td>
+                <td>{{ task.due_date|date:"d.m.Y H:i" }}</td>
+                <td>
+                    <form action="{% url 'todo:delete' task.pk %}" method="post">{% csrf_token %}
+                        <button type="submit" class="button small bg-white cycle" value="Confirm">
+                            <span class="mif-bin bg-white fg-red"></span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

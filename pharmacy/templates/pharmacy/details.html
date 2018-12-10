@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load todo %}
+
+
+{% block title %}Pharmacy {{ pharmacy.name }}{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-12">
+        <h1>{{ pharmacy.name }}</h1><a href="{% url 'pharmacy:index' %}">Back to list</a> |
+        <a href="{% url 'pharmacy:edit' pharmacy.pk %}">Edit</a>
+        <hr />
+    </div>
+    <hr />
+</div>
+<div class="row">
+    <div class="cell-12">
+        <ul data-cls-tabs="flex-justify-start" data-role="tabs" data-expand="true">
+            <li><a href="#personal_data">Global informations</a></li>
+            <li><a href="#admin_work">Administrative work</a></li>
+            <li><a href="#comptability">Comptability</a></li>
+            <li><a href="#it">IT</a></li>
+            <li><a href="#inventories">Inventories</a></li>
+        </ul>
+        <div class="border bd-default no-border-top p-2">
+            <div class="row">
+                <div class="cell-12">
+                    <div id="personal_data">
+                        <div class="card">
+                            <div class="card-header bg-lightGray">
+                                General informations
+                            </div>
+                            <div class="card-content p-2">
+                                <div class="row">
+                                    <div class="cell-2">
+                                        <span class="text-bold">Adresse</span><br />
+                                        <adress>
+                                            {{ pharmacy.street }} 
+                                            {{ pharmacy.npa }} {{ pharmacy.city }},
+                                            {{ pharmacy.canton }}
+                                        </adress>
+                                    </div>
+                                    <div class="cell-2">
+                                        <span class="text-bold">Tél.</span><br />
+                                        {{ pharmacy.phone }}
+                                    </div>
+                                    <div class="cell-2">
+                                        <span class="text-bold">Fax</span><br />
+                                        {{ pharmacy.fax }}
+                                    </div>
+                                    
+                                    <div class="cell-2">
+                                        <span class="text-bold">Email.</span><br />
+                                        <a href="mailto:{{ pharmacy.email }}">{{ pharmacy.email }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="admin_work">
+                <div class="row">
+                    <div class="cell-12">
+                        <div class="card">
+                            <div class="card-header bg-lightGray">
+                                work
+                            </div>
+                            <div class="card-content p-2">
+                                <div class="row">
+                                    <div class="cell-2">
+                                        <span class="text-bold">Department</span><br />
+                                        
+                                    </div>
+                                    <div class="cell-2">
+                                        <span class="text-bold">Role</span><br />
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="comptability">
+                <div class="row">
+                    <div class="cell-12">
+                        <div class="card">
+                            <div class="card-header bg-lightGray">
+                                Comptability
+                            </div>
+                            <div class="card-content p-2">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="it">
+                <div class="row">
+                    <div class="cell-12">
+                        <div class="card">
+                            <div class="card-header bg-lightGray">
+                                IT
+                            </div>
+                            <div class="card-content p-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="inventories">
+                <div class="row">
+                    <div class="cell-12">
+                        <div class="card">
+                            <div class="card-header bg-lightGray">
+                                Inventories
+                            </div>
+                            <div class="card-content p-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block js %}
+
+{% endblock %}

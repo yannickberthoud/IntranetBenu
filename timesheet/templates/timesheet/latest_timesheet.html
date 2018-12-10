@@ -1,0 +1,47 @@
+<div class="bg-brandColor2 fg-white p-2 drag-element">Timesheet
+    <span class="place-right">
+        <a href="{% url 'timesheet:new' %}" class="fg-white fg-orange-hover" title="New task">+</a> |
+        <a href="{% url 'timesheet:index' %}" class="fg-white fg-orange-hover" title="Show all tasks">Show all</a>
+        <button onclick="exportToCSV()" class="button warning outline small">Export to CVS</button>
+    </span>
+
+</div>
+<div class="border bd-brandColor2 p-2 mb-5">
+
+    <table id="table" class="table stripped row-hover" data-role="table" data-rownum="true" data-show-search="false"
+        data-show-rows-steps="false" data-show-table-info="false" data-show-pagination="false">
+        <thead>
+            <tr>
+                <th data-sortable="true">Days</th>
+                <th data-sortable="true">Timing</th>
+                <th data-sortable="true">Title</th>
+                <th data-sortable="true">Description</th>
+                <th data-sortable="true"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in timesheets|dictsort:"working_hour" %}
+            <tr>
+                <td>
+                    {{ event.date|date:"l" }}
+                </td>
+                <td>
+                    {{ event.working_hour }}
+                </td>
+                <td><a href="{% url 'timesheet:edit' event.pk %}">{{ event.title }}</a></td>
+                <td>
+                    {{ event.description }}
+                </td>
+                <td>
+                    <form action="{% url 'timesheet:delete' event.pk %}" method="post">{% csrf_token %}
+                        <button type="submit" class="button small bg-white cycle" value="Confirm">
+                            <span class="mif-bin bg-white fg-red"></span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

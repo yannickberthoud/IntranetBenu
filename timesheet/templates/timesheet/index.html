@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Timesheet{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="cell-7">
+        <h1>Timesheet </h1><a href="{% url 'timesheet:new' %}">New</a>
+        <hr />
+    </div>
+    <div class="cell-5 align-right">
+        <h4>Statistiques</h4>
+        <canvas id="Chart-year"></canvas>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="cell-12">
+        {% if messages %}
+        <ul class="custom-list-marker">
+            {% for message in messages %}
+            <li data-marker="✓" {% if message.tags %} class="{{ message.tags }} fg-green" {% endif %}>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="calendar" class="mt-1">
+            <h4>Week {% now "W" %} <span class="small">{{ hours_week }}/h effectuées sur 42,50</span></h4>
+            <button onclick="exportToCSV()" class="button success outline small">Export to CVS</button>
+            <table id="table" class="table stripped row-hover" data-role="table" data-rownum="true" data-show-search="false"
+                data-show-rows-steps="false" data-show-table-info="false" data-show-pagination="false">
+                <thead>
+                    <tr>
+                        <th data-sortable="true">Days</th>
+                        <th data-sortable="true">Working hour</th>
+                        <th data-sortable="true">Title</th>
+                        <th data-sortable="true">Description</th>
+                        <th data-sortable="true"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events_list|dictsort:"working_hour" %}
+                    <tr>
+                        <td>
+                            {{ event.date|date:"l" }}
+                        </td>
+                        <td>{{ event.working_hour }}
+                        </td>
+                        <td><a href="{% url 'timesheet:edit' event.pk %}">{{ event.title }}</a></td>
+                        <td>
+                            {{ event.description }}
+                        </td>
+                        <td>
+                            <form action="{% url 'timesheet:delete' event.pk %}" method="post">{% csrf_token %}
+                                <button type="submit" class="button small bg-white cycle" value="Confirm">
+                                    <span class="mif-bin bg-white fg-red"></span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script>
+    function exportToCSV() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth();
+        var table = $('#table').data('table');
+        table.export('CSV', 'all', 'timesheet-' + month + '-' + year + '.csv', {
+            csvDelimiter: ",",
+            csvNewLine: "\r\n",
+            includeHeader: true
+        });
+    } (jQuery);
+
+    var ctx = document.getElementById('Chart-year').getContext('2d');
+    var chart = new Chart(ctx, {
+        "type": "bar",
+        "data": {
+            "labels": [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July"
+            ],
+            "datasets": [{
+                "label": "Total hours per month",
+                "data": [65, 59, 80, 81, 56, 55, 40],
+                "fill": false,
+                "backgroundColor": [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(255, 159, 64, 0.2)",
+                    "rgba(255, 205, 86, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(201, 203, 207, 0.2)"
+                ],
+                "borderColor": [
+                    "rgb(255, 99, 132)",
+                    "rgb(255, 159, 64)",
+                    "rgb(255, 205, 86)",
+                    "rgb(75, 192, 192)",
+                    "rgb(54, 162, 235)",
+                    "rgb(153, 102, 255)",
+                    "rgb(201, 203, 207)"
+                ],
+                "borderWidth": 1
+            }]
+        },
+        "options": {
+            "scales": {
+                "yAxes": [
+                    {
+                        "ticks": {
+                            "beginAtZero": true
+                        }
+                    }
+                ]
+            }
+        }
+    });
+</script>
+{% endblock %}
